@@ -12,7 +12,11 @@ if (isset($data['name']) && isset($data['email']) && isset($data['ter_id'])) {
 		echo json_encode(['data' => 0]);
 	}
 	else {
-		echo json_encode(['data' => $result]);
+        $userTer = $territoryModel->select('ter_id', [$data["ter_id"]]);
+
+        $existUser = ['name'=>$result->name, 'email'=>$result->email, 'ter_address'=>$userTer[0]->ter_address];
+
+        echo json_encode(['data' => $existUser]);
 	}
 }
 

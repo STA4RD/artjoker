@@ -16,8 +16,8 @@ let selects = document.getElementById('selects');
 territory_id.onchange = () => {
     resetError(elements.territory.parentNode);
 
-    if (document.getElementById('regions_div')) {
-        document.getElementById('regions_div').remove();
+    if (document.getElementById('cities_div')) {
+        document.getElementById('cities_div').remove();
     }
     if (document.getElementById('district_div')) {
         document.getElementById('district_div').remove();
@@ -25,40 +25,40 @@ territory_id.onchange = () => {
 
     axios.post('territory.php', {territory_id: territory_id.value})
         .then((data) => {
-                let regions_div = document.createElement('div');
-                regions_div.id = 'regions_div';
-                // regions_div.className = 'form-group';
-                let regions_select = regions_div.appendChild(document.createElement('select'));
-                regions_select.name = 'regions';
+                let cities_div = document.createElement('div');
+                cities_div.id = 'cities_div';
+                cities_div.className = 'form-group';
+                let cities_select = cities_div.appendChild(document.createElement('select'));
+                cities_select.name = 'cities';
 
-                // regions_select.className = 'chosen-select';
+                cities_select.className = 'chosen-select';
                 let options = document.createElement('option');
                 options.value = '';
-                regions_select.appendChild(options);
+                cities_select.appendChild(options);
 
-                for (let region of data.data.regions) {
+                for (let city of data.data.cities) {
                     let options = document.createElement('option');
-                    options.value = region.ter_id;
-                    options.innerHTML = region.ter_name;
-                    regions_select.appendChild(options);
+                    options.value = city.ter_id;
+                    options.innerHTML = city.ter_name;
+                    cities_select.appendChild(options);
                 }
 
-                selects.appendChild(regions_div);
+                selects.appendChild(cities_div);
 
-                regions_select.onchange = () => {
-                    resetError(elements.regions.parentNode);
+                cities_select.onchange = () => {
+                    resetError(elements.cities.parentNode);
 
                     if (document.getElementById('district_div')) {
                         document.getElementById('district_div').remove();
                     }
 
-                    axios.post('territory.php', {region_id: regions_select.value})
+                    axios.post('territory.php', {city_id: cities_select.value})
                         .then((data) => {
                             let district_div = document.createElement('div');
                             district_div.id = 'district_div';
-                            // regions_div.className = 'form-group';
+                            // cities_div.className = 'form-group';
                             let district_select = district_div.appendChild(document.createElement('select'));
-                            // regions_select.className = 'chosen-select';
+                            // cities_select.className = 'chosen-select';
                             district_select.name = 'districts';
 
                             let options = document.createElement('option');
@@ -122,8 +122,8 @@ submit.onclick = () => {
     resetError(elements.email.parentNode);
 
     resetError(elements.territory.parentNode);
-    if (elements.regions) {
-        resetError(elements.regions.parentNode)
+    if (elements.cities) {
+        resetError(elements.cities.parentNode)
 
     }
     if (elements.districts) {
@@ -147,9 +147,9 @@ submit.onclick = () => {
         error = true;
     }
 
-    if (typeof regions_div !== 'undefined') {
-        if (!elements.regions.value) {
-            return showError(elements.regions.parentNode, ' Укажите откуда вы REGIONS.');
+    if (typeof cities_div !== 'undefined') {
+        if (!elements.cities.value) {
+            return showError(elements.cities.parentNode, ' Укажите откуда вы cities.');
             error = true;
         }
     }
@@ -165,8 +165,8 @@ submit.onclick = () => {
 
     if (typeof elements.districts !== 'undefined' && elements.districts.value) {
         ter_id = elements.districts.value
-    } else if (typeof elements.regions !== 'undefined' && elements.regions.value) {
-        ter_id = elements.regions.value
+    } else if (typeof elements.cities !== 'undefined' && elements.cities.value) {
+        ter_id = elements.cities.value
     } else {
         ter_id = elements.territory.value
     }
@@ -181,7 +181,27 @@ submit.onclick = () => {
                 if (data.data.data === 0) {
                     alert('Succes registration')
                 } else {
-                    console.log(data.data);
+                    alert('Пользователь с таким Email уже существует')
+                    let existUser_div = document.createElement('div');
+                    divvv.appendChild(existUser_div);
+                    existUser_div.id = 'existUser';
+                    existUser_div.className = 'form-group';
+                    existUser_div.name = 'existUser';
+                    let table = document.createElement("table");
+                    existUser.appendChild(table);
+                    table.id = 'existUserTable';
+                    table.className = 'table';
+                    let tr = document.createElement("tr");
+                    existUserTable.appendChild(tr);
+                    let td = document.createElement("td");
+                    td.innerText = data.data.data.name;
+                    tr.appendChild(td);
+                    td = document.createElement("td");
+                    td.innerText = data.data.data.email;
+                    tr.appendChild(td);
+                    td = document.createElement("td");
+                    td.innerText = data.data.data.ter_address;
+                    tr.appendChild(td);
                 }
             })
             .catch((err) => {

@@ -107,7 +107,6 @@ class UserModel extends AbstractModel
 		$statement = $this->connection->prepare($query);
 		$statement->execute([$value]);
 		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-//var_dump($result);
 		//Возвращает объект класса User
 		$user     = new User($result[0]['name'], $result[0]['email'], $result[0]['territory_id']);
 		$user->id = $result[0]['id'];
@@ -139,7 +138,6 @@ class TerritoryModel extends AbstractModel
 		$statement = $this->connection->prepare($query);
 		$statement->execute($value);
 		$results = $statement->fetchAll(PDO::FETCH_ASSOC);
-//        var_dump($query);
 		//Возвращает объект класса Territory
 		foreach ($results as $result) {
 			$territories[] = new Territory(

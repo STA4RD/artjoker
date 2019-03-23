@@ -27,7 +27,7 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col" id="divvv">
             <form id="form" name="registration">
                 <div class="form-group">
                     <label for="name">Full Name</label>
