@@ -99,6 +99,11 @@ $("#form").submit(function (e) {
 
 // VALIDATION
 
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 function showError(container, errorMessage) {
     container.className = 'error';
     var msgElem = document.createElement('p');
@@ -137,7 +142,7 @@ submit.onclick = () => {
         error = true;
     }
 
-    if (email.value.length < 1) {
+    if (email.value.length < 1 || (!validateEmail(email.value))) {
         showError(elements.email.parentNode, ' Укажите email.');
         error = true;
     }
