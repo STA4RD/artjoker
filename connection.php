@@ -1,4 +1,5 @@
 <?php
+// не используется
 class Database
 {
     private static $connection;
